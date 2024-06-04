@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-3">
+            <img src="{{ asset('images/uploads/' ~ entity.image) }}" class="w-100 border" alt="employee picture">
+        </div>
+        <div class="col-9">
+            <img class="float-end" src="{{ asset('images/fatchip.png') }}" height="50" alt="Fatchip Logo">
+            <h1>{{entity.firstname}} {{entity.lastname}}</h1>
+            <p class="text-muted">Azubi zum Fachinformatiker für Anwendungsentwicklung</p>
+            <p>Geb.: {{entity.birthday.format("d.m.Y")}}</p>
+            <p>Email: <a href="mailto:{{entity.email}}">{{entity.email}}</a></p>
+            <p>GitHub: {{entity.github != '' ? entity.github : '-'}}</p>
+            <p>Bei Fatchip angestellt seit {{ atFatchipSince }}</p>
+        </div>
+    </div>
+    {% if entity.preSkills|length > 0 %}
+        <hr>
+        <div>
+            <h2>Vorkenntnisse in Programmierung:</h2>
+            <ul>
+                {% for skill in entity.preSkills %}
+                    <li>{{ skill.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if entity.newSkills|length > 0 %}
+        <hr>
+        <div>
+            <h2>Bei Fatchip bisher gelernt:</h2>
+            <ul>
+                {% for skill in entity.newSkills %}
+                    <li>{{ skill.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <hr>
+    <span id="datetime" class="d-flex justify-content-end" {{ stimulus_controller('updateTime') }}></span>
+{% endblock %}

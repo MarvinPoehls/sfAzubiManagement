@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>Mitarbeiter Liste</h1>
+    <hr>
+    {% include 'searchbar.html.twig' %}
+    <table class="table table-bordered">
+        <thead class="text-white" style="background-color: #f60">
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Geburtstag</th>
+                <th>Email</th>
+                <th class="text-end">Optionen</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white">
+            {% for employee in employees %}
+                <tr id="employee_{{ employee.id }}">
+                    <td class="text-center px-0"><input type="checkbox" name="deleteId" value="{{ employee.id }}"></td>
+                    <td>
+                        <a href="{{ path('employee', {'id': employee.id}) }}">
+                            {{ employee.firstname }} {{ employee.lastname }}
+                        </a>
+                    </td>
+                    <td>{{ employee.birthday.format("d.m.Y") }}</td>
+                    <td>{{ employee.email}}</td>
+                    <td class="text-end">
+                        <a href="{{ path('employeeEdit', {'id': employee.id}) }}" class="btn btn-sm btn-secondary"><i class="bi bi-pencil-fill"></i></a>
+                        <button onclick="deleteEmployee({{ employee.id }}, true)" class="btn btn-sm btn-danger"><i class="bi bi-x-lg"></i></button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-auto">
+            <button type="button" class="btn btn-danger d-inline" onclick="deleteCheckedEmployees()"><i class="bi bi-trash me-2"></i>Ausgewählte Mitarbeiter löschen</button>
+        </div>
+        <div class="col ">
+            {% if pages > 1 %}
+                {% include 'pagination.html.twig' %}
+            {% endif %}
+        </div>
+        <div class="col-auto">
+            <a type="button" class="btn btn-success d-inline" href="{{ path('employeeEdit') }}"><i class="bi bi-plus me-2"></i>Neuen Mitarbeiter anlegen</a>
+        </div>
+    </div>
+    <script src="{{ asset('js/deleteEmployee.js') }}"></script>
+{% endblock %}

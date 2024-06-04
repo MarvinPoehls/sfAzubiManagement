@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>Mitarbeiter {{ entity ? 'bearbeiten' : 'hinzufügen' }}</h1>
+    <hr>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            {% include 'message.html.twig' %}
+        {% endfor %}
+    {% endfor %}
+    {% include 'addEmployeeForm.html.twig' %}
+    {% if entity %}
+        <a role="button" class="btn btn-success" href="{{ path(app.request.attributes.get('_route')) }}"><i class="bi bi-plus me-2"></i>Neuer Mitarbeiter</a>
+        <button type="button" class="btn btn-danger" onclick="deleteEmployee({{id}});"><i class="bi bi-trash me-2"></i>Mitarbeiter löschen</button>
+    {% endif %}
+    <script src="{{ asset('js/deleteEmployee.js') }}"></script>
+{% endblock %}
