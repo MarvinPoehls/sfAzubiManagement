@@ -6,20 +6,23 @@ use App\Form\Type\SearchbarType;
 use App\Repository\EmployeeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class AzubiListController extends AbstractController
 {
-    public function __construct(private readonly EmployeeRepository $repository){}
+    public function __construct(private readonly EmployeeRepository $repository)
+    {
+    }
 
     #[Route(path: '/', name: 'list')]
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $limit = $request->get('limit') ?? 10;
         $currentPage = $request->get('page') ?? 1;
         $offset = ($currentPage * $limit) - $limit;
         $employeeCount = $this->repository->getEmployeeCount($request->get('search'));
-        $pages = (int) ceil($employeeCount/$limit);
+        $pages = (int) ceil($employeeCount / $limit);
 
         $options = [];
         $search = $request->get('search');

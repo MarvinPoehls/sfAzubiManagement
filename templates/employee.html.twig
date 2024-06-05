@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="row">
-        <div class="col-3">
-            <img src="{{ asset('images/uploads/' ~ entity.image) }}" class="w-100 border" alt="employee picture">
+        <div class="col-3 align-items-center d-flex border">
+            <img src="{{ asset('images/uploads/' ~ entity.image) }}" class="w-100" alt="employee picture">
         </div>
         <div class="col-9">
-            <img class="float-end" src="{{ asset('images/fatchip.png') }}" height="50" alt="Fatchip Logo">
+            <a href="{{ path('list') }}">
+                <img class="float-end" src="{{ asset('images/fatchip.png') }}" height="50" alt="Fatchip Logo">
+            </a>
             <h1>{{entity.firstname}} {{entity.lastname}}</h1>
             <p class="text-muted">Azubi zum Fachinformatiker für Anwendungsentwicklung</p>
             <p>Geb.: {{entity.birthday.format("d.m.Y")}}</p>

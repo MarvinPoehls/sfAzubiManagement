@@ -11,7 +11,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class EmployeeEditAjaxController extends AbstractController
 {
-    public function __construct(private readonly EmployeeRepository $repository,private readonly EntityManagerInterface $em){}
+    public function __construct(private readonly EmployeeRepository $repository, private readonly EntityManagerInterface $em)
+    {
+    }
 
     #[Route(path: '/employee/edit/ajax', name: 'employeeEditAjax')]
     public function index(Request $request): JsonResponse
@@ -33,11 +35,13 @@ class EmployeeEditAjaxController extends AbstractController
     {
         $deleteIds = $request->get('ids');
 
-        if (!$deleteIds || count($deleteIds) < 1)
+        if (!$deleteIds || count($deleteIds) < 1) {
             return new JsonResponse(['error' => 'No ids provided'], 400);
+        }
 
-        foreach ($deleteIds as $deleteId)
+        foreach ($deleteIds as $deleteId) {
             $this->em->remove($this->repository->find($deleteId));
+        }
         $this->em->flush();
 
         return new JsonResponse(['success' => true], 200);

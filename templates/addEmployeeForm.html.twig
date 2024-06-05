@@ -1,6 +1,6 @@
 <div {{ stimulus_controller('add-employee-form', {
-    activeImage: asset('images/uploads/' ~ (entity.getImage() ?? 'defaultProfilePicture.png')),
-    defaultImage: asset('images/uploads/defaultProfilePicture.png')
+    activeImage: asset(uploadDir ~ (entity.getImage() ?? 'defaultProfilePicture.png')),
+    defaultImage: asset(uploadDir ~ 'defaultProfilePicture.png')
 }) }}>
 {{ form_start(addEmployeeForm) }}
 {{ form_row(addEmployeeForm.firstname) }}
@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col-4">
         <div class="position-relative">
-            <img id="preview_image" {{ stimulus_target('add-employee-form', 'previewImage') }} src="{{ asset('images/uploads/' ~ entity.getImage() ?? 'defaultProfilePicture.png') }}" class="img-preview" alt="Preview Image">
+            <img id="preview_image" {{ stimulus_target('add-employee-form', 'previewImage') }} src="{{ asset(uploadDir ~ entity.getImage() ?? 'defaultProfilePicture.png') }}" class="img-preview" alt="Preview Image">
             <button type="button" {{ stimulus_target('add-employee-form', 'clearImageButton') }} id="clearImageButton" class="btn btn-danger clear-img-btn position-absolute end-0 {{ not entity or not entity.getImage() ? 'd-none' : '' }}"><i class="bi bi-x"></i></button>
             <input id="setDefaultImage" name="setDefaultImage" type="hidden" value="0">
         </div>
@@ -24,8 +24,7 @@
     </div>
     <div class="col-8">
         <div class="border rounded p-3 mb-3 bg-white">
-            <h2>Vorherige Skills</h2>
-            <hr>
+            <h2>{{ form_label(addEmployeeForm.preSkills) }}</h2>
             <ul class="preSkills"
                 data-index="{{ addEmployeeForm.preSkills|length > 0 ? addEmployeeForm.preSkills|last.vars.name + 1 : 0 }}"
                 data-prototype="{{ form_widget(addEmployeeForm.preSkills.vars.prototype)|e('html_attr') }}">
@@ -33,7 +32,7 @@
                     <li>
                         <div class="row">
                             <div class="col">
-                                {{ form_row(skill.name) }}
+                                {{ form_widget(skill.name) }}
                             </div>
                             <div class="col-auto"></div>
                         </div>
@@ -43,8 +42,7 @@
             <button type="button" class="btn btn-success addSkill" data-collection-holder-class="preSkills" title="Add Skill"><i class="bi bi-plus"></i></button>
         </div>
         <div class="border rounded p-3 bg-white">
-            <h2>Neu bei Fatchip gelernt</h2>
-            <hr>
+            <h2>{{ form_label(addEmployeeForm.newSkills) }}</h2>
             <ul class="newSkills"
                 data-index="{{ addEmployeeForm.newSkills|length > 0 ? addEmployeeForm.newSkills|last.vars.name + 1 : 0 }}"
                 data-prototype="{{ form_widget(addEmployeeForm.newSkills.vars.prototype)|e('html_attr') }}">
@@ -64,4 +62,4 @@
     </div>
 </div>
 {{ form_row(addEmployeeForm.submit) }}
-{{ form_end(addEmployeeForm) }}
+{{ form_end(addEmployeeForm, {'render_rest': false}) }}

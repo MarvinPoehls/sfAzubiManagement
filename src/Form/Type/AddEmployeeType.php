@@ -3,7 +3,6 @@
 namespace App\Form\Type;
 
 use App\Entity\EmployeeEntity;
-use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -19,11 +18,11 @@ class AddEmployeeType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('firstname', TextType::class, ['empty_data' => '', 'data' => $options['firstname']]);
-        $builder->add('lastname', TextType::class, ['empty_data' => '', 'data' => $options['lastname']]);
-        $builder->add('birthday', DateType::class, ['data' => $options['birthday']]);
-        $builder->add('email', EmailType::class, ['required' => false, 'data' => $options['email']]);
-        $builder->add('github', TextType::class, ['empty_data' => '', 'required' => false, 'data' => $options['github']]);
+        $builder->add('firstname', TextType::class, ['empty_data' => '', 'data' => $options['firstname'], 'label' => 'Vorname']);
+        $builder->add('lastname', TextType::class, ['empty_data' => '', 'data' => $options['lastname'], 'label' => 'Nachname']);
+        $builder->add('birthday', DateType::class, ['data' => $options['birthday'], 'label' => 'Geburtstag']);
+        $builder->add('email', EmailType::class, ['required' => false, 'data' => $options['email'], 'label' => 'Email']);
+        $builder->add('github', TextType::class, ['empty_data' => '', 'required' => false, 'data' => $options['github'], 'label' => 'Github']);
         $builder->add('image', FileType::class, [
             'label' => false,
             'attr' => [
@@ -37,22 +36,22 @@ class AddEmployeeType extends AbstractType
                     'maxSize' => '1024k',
                     'mimeTypes' => ['image/*'],
                     'mimeTypesMessage' => 'Please upload a valid Image File (png, jpeg, svg etc.)',
-                ])
-            ]
+                ]),
+            ],
         ]);
         $builder->add('atFatchipSince', DateType::class, [
             'data' => $options['atFatchipSince'],
-            'label' => 'Bei Fatchip seit'
+            'label' => 'Bei Fatchip seit',
         ]);
         $builder->add('preSkills', CollectionType::class, [
             'entry_type' => SkillType::class,
-            'entry_options' => ['label' => false],
+            'label' => 'Vorherige Skills',
             'allow_add' => true,
             'allow_delete' => true,
         ]);
         $builder->add('newSkills', CollectionType::class, [
             'entry_type' => SkillType::class,
-            'entry_options' => ['label' => false],
+            'label' => 'Neu bei Fatchip gelernt',
             'allow_add' => true,
             'allow_delete' => true,
         ]);
@@ -70,7 +69,7 @@ class AddEmployeeType extends AbstractType
             'lastname' => '',
             'github' => '',
             'image' => null,
-            'atFatchipSince' => new DateTime(),
+            'atFatchipSince' => new \DateTime(),
         ]);
     }
 }

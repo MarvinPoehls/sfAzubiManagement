@@ -20,14 +20,15 @@ class EmployeeEditController extends AbstractController
         private readonly string $uploadDirectory,
         private readonly EmployeeRepository $repository,
         private readonly SluggerInterface $slugger,
-    ){}
+    ) {
+    }
 
     #[Route(path: '/employee/edit', name: 'employeeEdit')]
     public function new(Request $request): RedirectResponse|Response
     {
         $id = $request->get('id');
         $employee = $this->repository->getEmployee($id);
-        $isEdit = $employee->getId() !== null;
+        $isEdit = null !== $employee->getId();
 
         $options = [];
         if ($isEdit) {
@@ -67,6 +68,7 @@ class EmployeeEditController extends AbstractController
             }
 
             $this->addFlash('success', 'Erfolgreich gespeichert!');
+
             return $this->redirectToRoute('employeeEdit', ['id' => $id]);
         }
 
@@ -74,6 +76,7 @@ class EmployeeEditController extends AbstractController
             'addEmployeeForm' => $form,
             'entity' => $isEdit ? $employee : false,
             'id' => $isEdit ? $employee->getId() : null,
+            'uploadDir' => $this->uploadDirectory,
         ]);
     }
 
@@ -93,6 +96,7 @@ class EmployeeEditController extends AbstractController
         } catch (FileException $e) {
             dd($e);
         }
+
         return $newFilename;
     }
 
